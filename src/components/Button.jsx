@@ -1,10 +1,12 @@
 import React, {useState} from "react";
+import sounds from "../sounds/sounds";
 
 const Button = (props) => {
     const [buttonPressed, setButton] = useState(false);
     
-    const playButtonSound = (audioFile) => {
-        let audio = new Audio(audioFile);
+    const playButtonSound = (color) => {
+        let sound = sounds[color]
+        let audio = new Audio(sound);
         audio.play();
     };
 
@@ -14,7 +16,8 @@ const Button = (props) => {
         setTimeout(() => {
            setButton(false);
         }, 200);
-        return props.id
+
+        return props.colorPressed(props.id)
     };
 
     return (

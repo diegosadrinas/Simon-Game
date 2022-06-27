@@ -4,48 +4,55 @@ import React, {useState, useEffect} from 'react';
 function App() {
   const [gamePattern, setGamePattern] = useState(["green", "yellow"])
   const [buttonHighlighted, setHighlight] =  useState(false);
-  const [activeColour, setActiveColour] = useState("")
-
-  const buttonColours =  ["red", "blue", "green", "yellow"];
+  const [userSequence, setUserSequence] = useState([])
+  const [activeColor, setActiveColor] = useState("")
+  const buttonColors =  ["red", "blue", "green", "yellow"];
 
   const nextColourSequence = () => {
     let randomNumber = Math.floor(Math.random() * 3);
-    let randomChosenColour = buttonColours[randomNumber];
+    let randomChosenColor = buttonColors[randomNumber];
 
     setGamePattern(prevValue => {
-      return ([...prevValue, randomChosenColour])
+      return ([...prevValue, randomChosenColor])
     })
   };
 
-  const handleSequence = () => {
+  const handleSequence = (audioFile) => {
     console.log("entré a sequence")
-    gamePattern.forEach((colour) => {
+    gamePattern.forEach((color) => {
       setHighlight(true)
-      setTimeout(setHighlight(true), 1000)
-      console.log(colour)
+      setTimeout(() => {
+        setHighlight(false);
+      }, 150)
 
     })
 };
+
+  const handleColorPressedByUser = (id) => {
+    setUserSequence(prevValue => {
+      return [...prevValue, id ]
+    })
+  };
 
   return (
     <div>
       <h1 id="level-title">Press A Key to Start</h1>
       <div className="container">
       <div className="row">
-        {buttonColours.map((colour, index) => {
-          return ( 
+        {buttonColors.map((color, index) => {
+          return (
             <Button 
-            key={colour + index}
-            id={colour}
-            highlight={buttonHighlighted}
-            audioFile={`../sounds/${colour}.mp3`}
+              key={color + index}
+              id={color}
+              highlight={buttonHighlighted}
+              audioFile={color}
+              colorPressed={handleColorPressedByUser}
             />
           )
         }
       )}
     </div>
-    <button onClick={handleSequence}>Click</button>
-
+    <button onClick={handleSequence}>handleSequence</button>
   </div>
     </div>
   );
